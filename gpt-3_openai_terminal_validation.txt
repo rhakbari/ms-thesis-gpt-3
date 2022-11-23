@@ -1,0 +1,349 @@
+(gpt3) ThinkPad-T560:openai_dataset $ ls
+example_train.json  example_validation.json
+(gpt3) ThinkPad-T560:openai_dataset $ openai tools fine_tunes.prepare_data -f example_train.json
+Analyzing...
+
+- Your file contains 500 prompt-completion pairs
+- All prompts end with suffix `}`
+- All prompts start with prefix `{'title': '`
+- All completions end with suffix `]`
+- The completion should start with a whitespace character (` `). This tends to produce better results due to the tokenization we use. See https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset for more details
+
+Based on the analysis we will perform the following actions:
+- [Recommended] Add a whitespace character to the beginning of the completion [Y/n]: y
+
+
+Your data will be written to a new JSONL file. Proceed [Y/n]: y
+
+Wrote modified file to `example_train_prepared.jsonl`
+Feel free to take a look!
+
+Now use that file when fine-tuning:
+> openai api fine_tunes.create -t "example_train_prepared.jsonl"
+
+After you’ve fine-tuned a model, remember that your prompt has to end with the indicator string `}` for the model to start generating completions, rather than continuing with the prompt. Make sure to include `stop=["]"]` so that the generated texts ends at the expected place.
+Once your model starts training, it'll approximately take 9.31 minutes to train a `curie` model, and less for `ada` and `babbage`. Queue will approximately take half an hour per job ahead of you.
+(gpt3) ThinkPad-T560:openai_dataset $ openai tools fine_tunes.prepare_data -f example_validation.json
+Analyzing...
+
+- Your file contains 500 prompt-completion pairs
+- There are 8 duplicated prompt-completion sets. These are rows: [17, 24, 162, 325, 340, 370, 430, 468]
+- All prompts end with suffix `}`
+- All prompts start with prefix `{'title': 'Super_Bowl_50', 'context': `. Fine-tuning doesn't require the instruction specifying the task, or a few-shot example scenario. Most of the time you should only add the input data into the prompt, and the desired output into the completion
+- All completions end with suffix `]`
+- The completion should start with a whitespace character (` `). This tends to produce better results due to the tokenization we use. See https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset for more details
+
+Based on the analysis we will perform the following actions:
+- [Recommended] Remove 8 duplicate rows [Y/n]: y
+- [Recommended] Remove prefix `{'title': 'Super_Bowl_50', 'context': ` from all prompts [Y/n]: y
+/home/rhakbari/.virtualenvs/gpt3/lib/python3.10/site-packages/openai/validators.py:279: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  x["prompt"] = x["prompt"].str[len(prefix) :]
+- [Recommended] Add a whitespace character to the beginning of the completion [Y/n]: y
+/home/rhakbari/.virtualenvs/gpt3/lib/python3.10/site-packages/openai/validators.py:421: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  x["completion"] = x["completion"].apply(
+
+
+Your data will be written to a new JSONL file. Proceed [Y/n]: y
+
+Wrote modified file to `example_validation_prepared.jsonl`
+Feel free to take a look!
+
+Now use that file when fine-tuning:
+> openai api fine_tunes.create -t "example_validation_prepared.jsonl"
+
+After you’ve fine-tuned a model, remember that your prompt has to end with the indicator string `}` for the model to start generating completions, rather than continuing with the prompt. Make sure to include `stop=["]"]` so that the generated texts ends at the expected place.
+Once your model starts training, it'll approximately take 26.68 minutes to train a `curie` model, and less for `ada` and `babbage`. Queue will approximately take half an hour per job ahead of you.
+(gpt3) ThinkPad-T560:openai_dataset $ openai api fine_tunes.create -t example_train_prepared.jsonl -v example_validation_prepared.jsonl -m davinci
+Upload progress: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 569k/569k [00:00<00:00, 379Mit/s]
+Uploaded file from example_train_prepared.jsonl: file-BaSgvdFFgpJVlaGtNdlHklKo
+Upload progress: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 401k/401k [00:00<00:00, 124Mit/s]
+Uploaded file from example_validation_prepared.jsonl: file-I3JjtwFBkFZMoCTflxfwWxGt
+Created fine-tune: ft-Gm0iAk5ZaexwCLcup9rwWCS2
+Streaming events until fine-tuning is complete...
+
+(Ctrl-C will interrupt the stream, but not cancel the fine-tune)
+[2022-11-22 23:49:09] Created fine-tune: ft-Gm0iAk5ZaexwCLcup9rwWCS2
+[2022-11-22 23:49:17] Fine-tune failed. Fine-tune will exceed billing hard limit
+
+Job failed. Please contact support@openai.com if you need assistance.
+(gpt3) ThinkPad-T560:openai_dataset $ openai api fine_tunes.create -t example_train_prepared.jsonl -v example_validation_prepared.jsonl -m davinci
+Found potentially duplicated files with name 'example_train_prepared.jsonl', purpose 'fine-tune' and size 568893 bytes
+file-BaSgvdFFgpJVlaGtNdlHklKo
+Enter file ID to reuse an already uploaded file, or an empty string to upload this file anyway: 
+Upload progress: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 569k/569k [00:00<00:00, 377Mit/s]
+Uploaded file from example_train_prepared.jsonl: file-mu5L0OpcXddxMac2qCN9d9Ng
+Found potentially duplicated files with name 'example_validation_prepared.jsonl', purpose 'fine-tune' and size 401392 bytes
+file-I3JjtwFBkFZMoCTflxfwWxGt
+Enter file ID to reuse an already uploaded file, or an empty string to upload this file anyway: 
+Upload progress: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 401k/401k [00:00<00:00, 165Mit/s]
+Uploaded file from example_validation_prepared.jsonl: file-USYcMDA0ZTIB61AmjHTcguVl
+Created fine-tune: ft-UohoIaNdc6yZW9dziJyznUkQ
+Streaming events until fine-tuning is complete...
+
+(Ctrl-C will interrupt the stream, but not cancel the fine-tune)
+[2022-11-22 23:50:10] Created fine-tune: ft-UohoIaNdc6yZW9dziJyznUkQ
+[2022-11-22 23:50:15] Fine-tune costs $14.73
+[2022-11-22 23:50:16] Fine-tune enqueued. Queue number: 3
+[2022-11-22 23:51:35] Fine-tune is in the queue. Queue number: 2
+
+
+Stream interrupted (client disconnected).
+To resume the stream, run:
+
+  openai api fine_tunes.follow -i ft-UohoIaNdc6yZW9dziJyznUkQ
+
+(gpt3) ThinkPad-T560:openai_dataset $ 
+(gpt3) ThinkPad-T560:openai_dataset $ openai api fine_tunes.create -t example_train_prepared.jsonl -v example_validation_prepared.jsonl -m davinci
+Found potentially duplicated files with name 'example_train_prepared.jsonl', purpose 'fine-tune' and size 568893 bytes
+file-mu5L0OpcXddxMac2qCN9d9Ng
+file-BaSgvdFFgpJVlaGtNdlHklKo
+Enter file ID to reuse an already uploaded file, or an empty string to upload this file anyway: 
+Upload progress: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 569k/569k [00:00<00:00, 594Mit/s]
+Uploaded file from example_train_prepared.jsonl: file-nH36yEO3lsVTEoofQ1QmjMqp
+Found potentially duplicated files with name 'example_validation_prepared.jsonl', purpose 'fine-tune' and size 401392 bytes
+file-I3JjtwFBkFZMoCTflxfwWxGt
+file-USYcMDA0ZTIB61AmjHTcguVl
+Enter file ID to reuse an already uploaded file, or an empty string to upload this file anyway: 
+Upload progress: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 401k/401k [00:00<00:00, 125Mit/s]
+Uploaded file from example_validation_prepared.jsonl: file-NSHsCurfdf7ihZmNdJCmdXmT
+Created fine-tune: ft-RGN7XHkQPVmuUSPbb7YG4zda
+Streaming events until fine-tuning is complete...
+
+(Ctrl-C will interrupt the stream, but not cancel the fine-tune)
+[2022-11-23 00:02:07] Created fine-tune: ft-RGN7XHkQPVmuUSPbb7YG4zda
+
+
+^C^C^C^C^Z
+[1]  + 97946 suspended  openai api fine_tunes.create -t example_train_prepared.jsonl -v  -m davinci
+(gpt3) ThinkPad-T560:openai_dataset $ openai api fine_tunes.list                              
+
+{
+  "data": [
+    {
+      "created_at": 1669105199,
+      "fine_tuned_model": "curie:ft-personal-2022-11-22-08-21-19",
+      "hyperparams": {
+        "batch_size": 1,
+        "learning_rate_multiplier": 0.1,
+        "n_epochs": 4,
+        "prompt_loss_weight": 0.01
+      },
+      "id": "ft-Uh58zHfBzCMhD34Bnzxn05jY",
+      "model": "curie",
+      "object": "fine-tune",
+      "organization_id": "org-UA0xqHRa8sJZiblAwTQ6C0kt",
+      "result_files": [
+        {
+          "bytes": 1869,
+          "created_at": 1669105280,
+          "filename": "compiled_results.csv",
+          "id": "file-yqY3UikoeY4A1nMehDLyMUiI",
+          "object": "file",
+          "purpose": "fine-tune-results",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "status": "succeeded",
+      "training_files": [
+        {
+          "bytes": 1110,
+          "created_at": 1669105198,
+          "filename": "example-test-1_prepared.jsonl",
+          "id": "file-N5LVL48NBDVFvPWj1iqlIDqn",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "updated_at": 1669105280,
+      "validation_files": []
+    },
+    {
+      "created_at": 1669142376,
+      "fine_tuned_model": null,
+      "hyperparams": {
+        "batch_size": null,
+        "learning_rate_multiplier": null,
+        "n_epochs": 4,
+        "prompt_loss_weight": 0.01
+      },
+      "id": "ft-3IWX8OSkvVfYoREBN1nHHoVm",
+      "model": "curie",
+      "object": "fine-tune",
+      "organization_id": "org-UA0xqHRa8sJZiblAwTQ6C0kt",
+      "result_files": [],
+      "status": "failed",
+      "training_files": [
+        {
+          "bytes": 81556009,
+          "created_at": 1669142376,
+          "filename": "example_train_prepared.jsonl",
+          "id": "file-GbCmPfDb4IViGC3E5rZoDdHQ",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "updated_at": 1669142415,
+      "validation_files": []
+    },
+    {
+      "created_at": 1669142949,
+      "fine_tuned_model": null,
+      "hyperparams": {
+        "batch_size": null,
+        "learning_rate_multiplier": null,
+        "n_epochs": 4,
+        "prompt_loss_weight": 0.01
+      },
+      "id": "ft-Gm0iAk5ZaexwCLcup9rwWCS2",
+      "model": "davinci",
+      "object": "fine-tune",
+      "organization_id": "org-UA0xqHRa8sJZiblAwTQ6C0kt",
+      "result_files": [],
+      "status": "failed",
+      "training_files": [
+        {
+          "bytes": 568893,
+          "created_at": 1669142946,
+          "filename": "example_train_prepared.jsonl",
+          "id": "file-BaSgvdFFgpJVlaGtNdlHklKo",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "updated_at": 1669142957,
+      "validation_files": [
+        {
+          "bytes": 401392,
+          "created_at": 1669142949,
+          "filename": "example_validation_prepared.jsonl",
+          "id": "file-I3JjtwFBkFZMoCTflxfwWxGt",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ]
+    },
+    {
+      "created_at": 1669143010,
+      "fine_tuned_model": "davinci:ft-personal-2022-11-22-20-19-27",
+      "hyperparams": {
+        "batch_size": 1,
+        "learning_rate_multiplier": 0.1,
+        "n_epochs": 4,
+        "prompt_loss_weight": 0.01
+      },
+      "id": "ft-UohoIaNdc6yZW9dziJyznUkQ",
+      "model": "davinci",
+      "object": "fine-tune",
+      "organization_id": "org-UA0xqHRa8sJZiblAwTQ6C0kt",
+      "result_files": [
+        {
+          "bytes": 108010,
+          "created_at": 1669148368,
+          "filename": "compiled_results.csv",
+          "id": "file-q587lqpCBWv6WGJRGaTGcvBa",
+          "object": "file",
+          "purpose": "fine-tune-results",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "status": "succeeded",
+      "training_files": [
+        {
+          "bytes": 568893,
+          "created_at": 1669143005,
+          "filename": "example_train_prepared.jsonl",
+          "id": "file-mu5L0OpcXddxMac2qCN9d9Ng",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "updated_at": 1669148368,
+      "validation_files": [
+        {
+          "bytes": 401392,
+          "created_at": 1669143010,
+          "filename": "example_validation_prepared.jsonl",
+          "id": "file-USYcMDA0ZTIB61AmjHTcguVl",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ]
+    },
+    {
+      "created_at": 1669143727,
+      "fine_tuned_model": "davinci:ft-personal-2022-11-22-21-04-53",
+      "hyperparams": {
+        "batch_size": 1,
+        "learning_rate_multiplier": 0.1,
+        "n_epochs": 4,
+        "prompt_loss_weight": 0.01
+      },
+      "id": "ft-RGN7XHkQPVmuUSPbb7YG4zda",
+      "model": "davinci",
+      "object": "fine-tune",
+      "organization_id": "org-UA0xqHRa8sJZiblAwTQ6C0kt",
+      "result_files": [
+        {
+          "bytes": 107796,
+          "created_at": 1669151095,
+          "filename": "compiled_results.csv",
+          "id": "file-xbSCXJFWJTEr5Ne2QbfwMUN2",
+          "object": "file",
+          "purpose": "fine-tune-results",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "status": "succeeded",
+      "training_files": [
+        {
+          "bytes": 568893,
+          "created_at": 1669143723,
+          "filename": "example_train_prepared.jsonl",
+          "id": "file-nH36yEO3lsVTEoofQ1QmjMqp",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "updated_at": 1669151095,
+      "validation_files": [
+        {
+          "bytes": 401392,
+          "created_at": 1669143727,
+          "filename": "example_validation_prepared.jsonl",
+          "id": "file-NSHsCurfdf7ihZmNdJCmdXmT",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ]
+    }
+  ],
+  "object": "list"
+}
+(gpt3) ThinkPad-T560:openai_dataset $ 

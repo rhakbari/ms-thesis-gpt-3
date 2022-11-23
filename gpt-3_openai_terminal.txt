@@ -1,0 +1,184 @@
+ThinkPad-T560:~ $ mkvirtualenv gpt3  
+created virtual environment CPython3.10.6.final.0-64 in 537ms
+  creator CPython3Posix(dest=/home/rhakbari/.virtualenvs/gpt3, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/home/rhakbari/.local/share/virtualenv)
+    added seed packages: pip==22.3.1, setuptools==65.5.1, wheel==0.38.4
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+virtualenvwrapper.user_scripts creating /home/rhakbari/.virtualenvs/gpt3/bin/predeactivate
+virtualenvwrapper.user_scripts creating /home/rhakbari/.virtualenvs/gpt3/bin/postdeactivate
+virtualenvwrapper.user_scripts creating /home/rhakbari/.virtualenvs/gpt3/bin/preactivate
+virtualenvwrapper.user_scripts creating /home/rhakbari/.virtualenvs/gpt3/bin/postactivate
+virtualenvwrapper.user_scripts creating /home/rhakbari/.virtualenvs/gpt3/bin/get_env_details
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+(gpt3) ThinkPad-T560:~ $ pip install openai 
+Collecting openai
+  Using cached openai-0.25.0.tar.gz (44 kB)
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+Collecting tqdm
+  Downloading tqdm-4.64.1-py2.py3-none-any.whl (78 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 78.5/78.5 kB 532.0 kB/s eta 0:00:00
+Collecting pandas-stubs>=1.1.0.11
+  Using cached pandas_stubs-1.5.1.221024-py3-none-any.whl (144 kB)
+Collecting numpy
+  Downloading numpy-1.23.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (17.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 17.1/17.1 MB 2.2 MB/s eta 0:00:00
+Collecting pandas>=1.2.3
+  Using cached pandas-1.5.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.1 MB)
+Collecting typing-extensions
+  Using cached typing_extensions-4.4.0-py3-none-any.whl (26 kB)
+Collecting requests>=2.20
+  Using cached requests-2.28.1-py3-none-any.whl (62 kB)
+Collecting openpyxl>=3.0.7
+  Using cached openpyxl-3.0.10-py2.py3-none-any.whl (242 kB)
+Collecting et-xmlfile
+  Using cached et_xmlfile-1.1.0-py3-none-any.whl (4.7 kB)
+Collecting pytz>=2020.1
+  Using cached pytz-2022.6-py2.py3-none-any.whl (498 kB)
+Collecting python-dateutil>=2.8.1
+  Using cached python_dateutil-2.8.2-py2.py3-none-any.whl (247 kB)
+Collecting types-pytz>=2022.1.1
+  Using cached types_pytz-2022.6.0.1-py3-none-any.whl (4.7 kB)
+Collecting idna<4,>=2.5
+  Downloading idna-3.4-py3-none-any.whl (61 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.5/61.5 kB 3.0 MB/s eta 0:00:00
+Collecting certifi>=2017.4.17
+  Downloading certifi-2022.9.24-py3-none-any.whl (161 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 161.1/161.1 kB 6.5 MB/s eta 0:00:00
+Collecting urllib3<1.27,>=1.21.1
+  Downloading urllib3-1.26.12-py2.py3-none-any.whl (140 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.4/140.4 kB 5.9 MB/s eta 0:00:00
+Collecting charset-normalizer<3,>=2
+  Downloading charset_normalizer-2.1.1-py3-none-any.whl (39 kB)
+Collecting six>=1.5
+  Downloading six-1.16.0-py2.py3-none-any.whl (11 kB)
+Building wheels for collected packages: openai
+  Building wheel for openai (pyproject.toml) ... done
+  Created wheel for openai: filename=openai-0.25.0-py3-none-any.whl size=55859 sha256=39cde54447314a4820bb44bfd3267acc7abf25fbfc0212673ea0c31abb21c386
+  Stored in directory: /home/rhakbari/.cache/pip/wheels/b4/2b/95/737049113f1905133261431692b68dda34fadb3022700a4187
+Successfully built openai
+Installing collected packages: types-pytz, pytz, urllib3, typing-extensions, tqdm, six, pandas-stubs, numpy, idna, et-xmlfile, charset-normalizer, certifi, requests, python-dateutil, openpyxl, pandas, openai
+Successfully installed certifi-2022.9.24 charset-normalizer-2.1.1 et-xmlfile-1.1.0 idna-3.4 numpy-1.23.5 openai-0.25.0 openpyxl-3.0.10 pandas-1.5.1 pandas-stubs(gpt3) ThinkPad-T560:~ $ openai api fine_tunes.create -t model -m "ada"
+
+///////////////////////////////////////////////////////////////////////////
+
+(gpt3) ThinkPad-T560:gpt-3 $ openai tools fine_tunes.prepare_data -f example-test-1.json
+
+Analyzing...
+
+- Your file contains 10 prompt-completion pairs. In general, we recommend having at least a few hundred examples. We've found that performance tends to linearly increase for every doubling of the number of examples
+- All prompts end with suffix `?`
+- All completions end with suffix `']`
+- The completion should start with a whitespace character (` `). This tends to produce better results due to the tokenization we use. See https://beta.openai.com/docs/guides/fine-tuning/preparing-your-dataset for more details
+
+Based on the analysis we will perform the following actions:
+- [Recommended] Add a whitespace character to the beginning of the completion [Y/n]: y
+
+
+Your data will be written to a new JSONL file. Proceed [Y/n]: y
+
+Wrote modified file to `example-test-1_prepared.jsonl`
+Feel free to take a look!
+
+Now use that file when fine-tuning:
+> openai api fine_tunes.create -t "example-test-1_prepared.jsonl"
+
+After you’ve fine-tuned a model, remember that your prompt has to end with the indicator string `?` for the model to start generating completions, rather than continuing with the prompt. Make sure to include `stop=["']"]` so that the generated texts ends at the expected place.
+Once your model starts training, it'll approximately take 2.58 minutes to train a `curie` model, and less for `ada` and `babbage`. Queue will approximately take half an hour per job ahead of you.
+(gpt3) ThinkPad-T560:gpt-3 $ openai api fine_tunes.create -t "example-test-1_prepared.jsonl"
+
+Upload progress: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████| 1.11k/1.11k [00:00<00:00, 1.20Mit/s]
+Uploaded file from example-test-1_prepared.jsonl: file-N5LVL48NBDVFvPWj1iqlIDqn
+Created fine-tune: ft-Uh58zHfBzCMhD34Bnzxn05jY
+Streaming events until fine-tuning is complete...
+
+(Ctrl-C will interrupt the stream, but not cancel the fine-tune)
+[2022-11-22 13:19:59] Created fine-tune: ft-Uh58zHfBzCMhD34Bnzxn05jY
+[2022-11-22 13:20:06] Fine-tune costs $0.00
+[2022-11-22 13:20:07] Fine-tune enqueued. Queue number: 0
+[2022-11-22 13:20:08] Fine-tune started
+[2022-11-22 13:20:57] Completed epoch 1/4
+[2022-11-22 13:20:59] Completed epoch 2/4
+[2022-11-22 13:21:01] Completed epoch 3/4
+[2022-11-22 13:21:03] Completed epoch 4/4
+[2022-11-22 13:21:20] Uploaded model: curie:ft-personal-2022-11-22-08-21-19
+[2022-11-22 13:21:20] Uploaded result file: file-yqY3UikoeY4A1nMehDLyMUiI
+[2022-11-22 13:21:20] Fine-tune succeeded
+
+Job complete! Status: succeeded 🎉
+Try out your fine-tuned model:
+
+openai api completions.create -m curie:ft-personal-2022-11-22-08-21-19 -p <YOUR_PROMPT>
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+(gpt3) ThinkPad-T560:gpt-3 $ openai api fine_tunes.list
+
+{
+  "data": [
+    {
+      "created_at": 1669105199,
+      "fine_tuned_model": "curie:ft-personal-2022-11-22-08-21-19",
+      "hyperparams": {
+        "batch_size": 1,
+        "learning_rate_multiplier": 0.1,
+        "n_epochs": 4,
+        "prompt_loss_weight": 0.01
+      },
+      "id": "ft-Uh58zHfBzCMhD34Bnzxn05jY",
+      "model": "curie",
+      "object": "fine-tune",
+      "organization_id": "org-UA0xqHRa8sJZiblAwTQ6C0kt",
+      "result_files": [
+        {
+          "bytes": 1869,
+          "created_at": 1669105280,
+          "filename": "compiled_results.csv",
+          "id": "file-yqY3UikoeY4A1nMehDLyMUiI",
+          "object": "file",
+          "purpose": "fine-tune-results",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "status": "succeeded",
+      "training_files": [
+        {
+          "bytes": 1110,
+          "created_at": 1669105198,
+          "filename": "example-test-1_prepared.jsonl",
+          "id": "file-N5LVL48NBDVFvPWj1iqlIDqn",
+          "object": "file",
+          "purpose": "fine-tune",
+          "status": "processed",
+          "status_details": null
+        }
+      ],
+      "updated_at": 1669105280,
+      "validation_files": []
+    }
+  ],
+  "object": "list"
+}
+
+//////////////////////////////////////////////////////
+
+(gpt3) ThinkPad-T560:gpt-3 $ openai api completions.create -m curie:ft-personal-2022-11-22-08-21-19 -p 3
+
+3 ['Bolt of Lightning']
+
+-9 2 0 Selenia Sky%
+
+(gpt3) ThinkPad-T560:gpt-3 $ openai api completions.create -m curie:ft-personal-2022-11-22-08-21-19 -p 3
+3 ['Decoy']
+1 ['Stand Together']
+1 ['V%]
+(gpt3) ThinkPad-T560:gpt-3 $ openai api completions.create -m curie:ft-personal-2022-11-22-08-21-19 -p 10
+10 ['keepsake'] ['wheezy'] ['sky'] ['shiny%
+(gpt3) ThinkPad-T560:gpt-3 $ openai api completions.create -m curie:ft-personal-2022-11-22-08-21-19
+<|endoftext|>Fringe Lessons (play) [author's introduction]
+Flash Fiction as a%
+
