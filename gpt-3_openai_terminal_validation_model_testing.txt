@@ -345,8 +345,9 @@ Streaming events until fine-tuning is complete...
 }
 
 (gpt3) ThinkPad-T560:gpt-3 $ python model_testing.py
-[<OpenAIObject at 0x7f3b6148d2b0> JSON: {
-  " The": -2.7415888,
-  "\u00a0": -3.0491567
+[<OpenAIObject at 0x7f00854e15d0> JSON: {
+  " The": -2.7414877,
+  "\u00a0": -3.0495987
 }]
- Manufacturing
+ Amazonia
+
