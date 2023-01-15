@@ -120,9 +120,6 @@ Streaming events until fine-tuning is complete...
 (Ctrl-C will interrupt the stream, but not cancel the fine-tune)
 [2022-11-23 00:02:07] Created fine-tune: ft-RGN7XHkQPVmuUSPbb7YG4zda
 
-
-^C^C^C^C^Z
-[1]  + 97946 suspended  openai api fine_tunes.create -t example_train_prepared.jsonl -v  -m davinci
 (gpt3) ThinkPad-T560:openai_dataset $ openai api fine_tunes.list                              
 
 {
